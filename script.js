@@ -120,6 +120,7 @@ function checkResult() {
     gameOver = true;
   } else if (dealerScore > 21) {
     textArea.innerText = 'You Win!';
+    gameOver = true;
   } else if (endOfTurn) {
     if (dealerScore < playerScore) {
       if (playerScore === 21) {
@@ -132,6 +133,7 @@ function checkResult() {
     } else if (dealerScore > playerScore) {
       textArea.innerText = 'You Lose...';
     }
+    gameOver = true;
   }
   if (gameOver) {
     newGameButton.style.display = 'block';
@@ -143,7 +145,6 @@ function dealerTurn() {
   while (dealer.score < 17) {
     dealer.cards.push(drawCard(deck));
   }
-  gameOver = true;
 }
 // ==============================================
 // initialize interface
@@ -175,6 +176,7 @@ newGameButton.addEventListener('click', () => {
   textArea.innerText = 'Game Started...';
   // If player got a blackjack, the dealer will draw cards.
   if (player.score === 21) {
+    endOfTurn = true;
     dealerTurn();
   }
   checkResult();
@@ -192,6 +194,9 @@ stayButton.addEventListener('click', () => {
 hitButton.addEventListener('click', () => {
   player.cards.push(drawCard(deck));
   player1Data.innerText = printPersonData(player);
-  if (player.score === 21) { dealerTurn(); }
+  if (player.score === 21) {
+    endOfTurn = true;
+    dealerTurn();
+  }
   checkResult();
 });
