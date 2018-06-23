@@ -200,5 +200,4 @@ hitButton.addEventListener('click', () => {
   }
   checkResult();
 });
-// asdfasdf test5
-// asdfasdfasdfasdf test5
+
