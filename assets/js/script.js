@@ -6,9 +6,11 @@ const newGameButton = document.getElementById('new-game-button');
 const hitButton = document.getElementById('hit-button');
 const stayButton = document.getElementById('stay-button');
 const textArea = document.getElementById('text-area');
-const player1Data = document.getElementById('player1-data');
-const player2Data = document.getElementById('player2-data');
+const player1Data = document.getElementById('player-data');
+const player2Data = document.getElementById('dealer-data');
 const displayData = document.getElementsByClassName('disp-data');
+const playerCards = document.querySelector('.js-player-cards');
+const dealerCards = document.querySelector('.js-delear-cards');
 
 // ================================================
 // game variables
@@ -33,21 +35,19 @@ Object.defineProperty(Person.prototype, 'score', {
     return acc;
   },
 });
+
 // ==============================================
 // Create players
 const player = new Person();
-player.name = prompt('Enter your name:', 'Player One');
-
 const dealer = new Person();
 dealer.name = 'Dealer';
-
 
 // ================================================
 // functions
 function createDeck() {
   const newDeck = [];
-  const suits = ['Spades', 'Clubs', 'Diamonds', 'Hearts'];
-  const ranks = ['Ace', 'King', 'Queen', 'Jack', 'Ten', 'Nine', 'Eight', 'Seven', 'Six', 'Five', 'Four', 'Three', 'Two'];
+  const suits = ['S', 'C', 'D', 'H'];
+  const ranks = ['A', 'K', 'Q', 'J', '10', '9', '8', '7', '6', '5', '4', '3', '2'];
   for (let suitsIndex = 0; suitsIndex < suits.length; suitsIndex++) {
     for (let ranksIndex = 0; ranksIndex < ranks.length; ranksIndex++) {
       newDeck.push({ suit: suits[suitsIndex], rank: ranks[ranksIndex] });
@@ -75,30 +75,32 @@ function drawCard(deckIn) {
 
 function convertRanktoValue(rank) {
   switch (rank) {
-    case 'Ace': return 11;
-    case 'Nine': return 9;
-    case 'Eight': return 8;
-    case 'Seven': return 7;
-    case 'Six': return 6;
-    case 'Five': return 5;
-    case 'Four': return 4;
-    case 'Three': return 3;
-    case 'Two': return 2;
+    case 'A': return 11;
+    case '9': return 9;
+    case '8': return 8;
+    case '7': return 7;
+    case '6': return 6;
+    case '5': return 5;
+    case '4': return 4;
+    case '3': return 3;
+    case '2': return 2;
     // for Ten, Jack, Queen, and King
     default: return 10;
   }
 }
 
-function printCardName(card) {
-  return `${card.rank} of ${card.suit}`;
+// ==============================================
+// Render Image
+function renderCardImage(card) {
+  return `<img src="./assets/images/${card.rank}${card.suit[0].toUpperCase()}.png">`;
 }
 
 function printPersonData(person) {
-  let text = `${person.name}'s Hand:\n`;
+  let text = `<h3>${person.name}'s Hand:</h3>`;
   for (let i = 0; i < person.cards.length; i++) {
-    text += `${printCardName(person.cards[i])}\n`;
+    text += `${renderCardImage(person.cards[i])}`;
   }
-  text += `Score: ${person.score}`;
+  text += `<p>Score: ${person.score}</p>`;
   return text;
 }
 
@@ -106,10 +108,17 @@ function initializeDOM() {
   displayData[0].style.display = 'none';
   displayData[1].style.display = 'none';
 
-  newGameButton.style.display = 'block';
-  hitButton.style.display = 'none';
-  stayButton.style.display = 'none';
-  textArea.innerText = "Let's Play!";
+  newGameButton.classList.remove('is-hidden');
+  newGameButton.classList.add('is-shown');
+
+  hitButton.classList.remove('is-shown');
+  hitButton.classList.add('is-hidden');
+
+  stayButton.classList.remove('is-shown');
+  stayButton.classList.add('is-hidden');
+
+  textArea.classList.remove('is-hidden');
+  textArea.classList.add('is-shown');
 }
 
 function checkResult() {
@@ -150,10 +159,16 @@ function dealerTurn() {
 // initialize interface
 initializeDOM();
 
+
+
 // ==============================================
 // Start a new game
-
 newGameButton.addEventListener('click', () => {
+  // make sure player inputs name
+  while(!player.name) {
+    player.name = prompt('Enter your name:', 'Player One');
+  }
+
   // show game data
   displayData[0].style.display = 'block';
   displayData[1].style.display = 'block';
@@ -168,8 +183,8 @@ newGameButton.addEventListener('click', () => {
   player.cards = [drawCard(deck), drawCard(deck)];
   dealer.cards = [drawCard(deck), drawCard(deck)];
   // show cards and scores for each person
-  player1Data.innerText = printPersonData(player);
-  player2Data.innerText = printPersonData(dealer);
+  player1Data.innerHTML = printPersonData(player);
+  player2Data.innerHTML = printPersonData(dealer);
   // restart flags
   gameOver = false;
   endOfTurn = false;

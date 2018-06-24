@@ -5,32 +5,53 @@
 
 <head>
   <meta charset="utf-8">
-  <title></title>
+  <title>Blackjack by Joshua Viceral</title>
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/styles.css">
 </head>
 
 <body>
-  <h1>Blackjack</h1>
-  <h4>by Joshua Viceral</h4>
-  <br>
-  <p id="text-area">Let's Play.</p>
+  <main>
+    <h1>Blackjack</h1>
+    <cite>by Joshua Viceral</cite>
 
-  <div class="disp-data" id="player2-data">
-    <p>Dealer's Hand:</p>
-  </div>
-  <br>
-  <div class="disp-data" id="player1-data">
-    <p>Player's Hand:</p>
-  </div>
+    <h2 id="text-area">Let's Play.</h2>
 
-  <div>
-    <button id="new-game-button">New Game</button>
-    <button id="hit-button">Hit!</button>
-    <button id="stay-button">Stay</button>
-  </div>
+    <section class="disp-data" id="dealer-data">
+      <p>Dealer's Hand:</p>
 
+      <div class="js-dealer-cards">
+        <img src="./assets/images/JS.png">
+        <img src="./assets/images/AS.png">
+      </div>
 
-  <script src="./createDeck.js"></script>
-  <script src="./script.js"></script>
+      <h4>Score: <span class="js-dealer-score">0</span></h4>
+    </section>
+
+    <section class="disp-data" id="player-data">
+      <p><span class="js-player-name"></span> Hand:</p>
+
+      <div class="js-player-cards">
+        <img src="./assets/images/2C.png">
+        <img src="./assets/images/3C.png">
+      </div>
+
+      <h4>Score: <span class="js-dealer-score">0</span></h4>
+    </section>
+
+    <section class="js-results">
+      <h3>You win</h3>
+      <h3>You lose</h3>
+    </section>
+
+    <section id="js-action-buttons">
+      <button id="new-game-button">New Game</button>
+      <button id="hit-button">Hit!</button>
+      <button id="stay-button">Stay</button>
+    </section>
+  </main>
+
+  <script src="./assets/js/script.js"></script>
 
 </body>
 
