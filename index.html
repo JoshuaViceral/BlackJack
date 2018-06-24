@@ -14,10 +14,12 @@
   <main>
     <h1>Blackjack</h1>
     <cite>by Joshua Viceral</cite>
+    <section class="text-area">
+      <h2 class="js-lets-play">Let's Play.</h2>
+      <h2 class="js-game-started">Game Started...</h2>
+    </section>
 
-    <h2 id="text-area">Let's Play.</h2>
-
-    <section class="disp-data" id="dealer-data">
+    <section class="disp-data dealer-data js-dealer-data">
       <p>Dealer's Hand:</p>
 
       <div class="js-dealer-cards">
@@ -25,29 +27,36 @@
         <img src="./assets/images/AS.png">
       </div>
 
-      <h4>Score: <span class="js-dealer-score">0</span></h4>
+      <h4>
+        Score: <span class="js-dealer-score">0</span>
+      </h4>
     </section>
 
-    <section class="disp-data" id="player-data">
-      <p><span class="js-player-name"></span> Hand:</p>
+    <section class="disp-data player-data js-player-data">
+      <p>
+        <span class="js-player-name"></span> Hand:</p>
 
       <div class="js-player-cards">
         <img src="./assets/images/2C.png">
         <img src="./assets/images/3C.png">
       </div>
 
-      <h4>Score: <span class="js-dealer-score">0</span></h4>
+      <h4>
+        Score: <span class="js-player-score">0</span>
+      </h4>
     </section>
 
-    <section class="js-results">
-      <h3>You win</h3>
-      <h3>You lose</h3>
+    <section class="js-results results">
+      <h3>You win!</h3>
+      <h3>You got a Blackjack! You win!</h3>
+      <h3>You lose...</h3>
+      <h3>It's a tie!</h3>
     </section>
 
-    <section id="js-action-buttons">
-      <button id="new-game-button">New Game</button>
-      <button id="hit-button">Hit!</button>
-      <button id="stay-button">Stay</button>
+    <section>
+      <button class="js-new-game-button new-game-button">New Game</button>
+      <button class="js-hit-button hit-button">Hit!</button>
+      <button class="js-stay-button stay-button">Stay</button>
     </section>
   </main>
 

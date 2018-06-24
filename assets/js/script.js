@@ -1,16 +1,27 @@
 /* Blackjack by Joshua Viceral */
 
+/* TO DO:
+- update score
+- show game result
+- create hidegameelements function */
+
 // ================================================
 // DOM variables
-const newGameButton = document.getElementById('new-game-button');
-const hitButton = document.getElementById('hit-button');
-const stayButton = document.getElementById('stay-button');
-const textArea = document.getElementById('text-area');
-const player1Data = document.getElementById('player-data');
-const player2Data = document.getElementById('dealer-data');
-const displayData = document.getElementsByClassName('disp-data');
-const playerCards = document.querySelector('.js-player-cards');
+const letsPlay = document.querySelector('.js-lets-play');
+const gameStarted = document.querySelector('js-game-started');
+const dealerData = document.querySelector('#js-dealer-data');
 const dealerCards = document.querySelector('.js-delear-cards');
+const dealerScore = document.querySelector('.js-dealer-score');
+
+const playerData = document.querySelector('#js-player-data');
+const playerName = document.querySelector('.js-player-name');
+const playerCards = document.querySelector('.js-player-cards');
+const playerScore = document.querySelector('.js-player-score');
+
+const results = document.querySelector('.js-results');
+const newGameButton = document.querySelector('.js-new-game-button');
+const hitButton = document.querySelector('.js-hit-button');
+const stayButton = document.querySelector('.js-stay-button');
 
 // ================================================
 // game variables
@@ -104,9 +115,14 @@ function printPersonData(person) {
   return text;
 }
 
+function hideAllGameButton() {
+
+}
+
 function initializeDOM() {
   displayData[0].style.display = 'none';
   displayData[1].style.display = 'none';
+
 
   newGameButton.classList.remove('is-hidden');
   newGameButton.classList.add('is-shown');
@@ -165,7 +181,7 @@ initializeDOM();
 // Start a new game
 newGameButton.addEventListener('click', () => {
   // make sure player inputs name
-  while(!player.name) {
+  while (!player.name) {
     player.name = prompt('Enter your name:', 'Player One');
   }
 
