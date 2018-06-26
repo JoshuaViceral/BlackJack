@@ -3,16 +3,16 @@
 }
 
 h2,
-h3,
-h4 {display: none}
+h3 {display: none}
 
 button {
 	padding: 10px 20px;
+	display: none;
 }
 
 
 .disp-data {
-	width: 90%;
+	width: 500px;
 	padding: 20px;
 	display: none;
 }
@@ -22,9 +22,12 @@ button {
 		display: inline-block;
 	}
 
-.dealer-data { background-color: lightblue; }
-.player-data { background-color: lightsteelblue; }
+.dealer-data { background-color: rgb(228, 176, 176); }
+.player-data { background-color: rgba(228, 176, 176, 0.8); }
+
+.game-buttons { margin-top: 20px; }
 
 /* Utility Classes */
 .show-block { display: block; }
-.show-inlineblock { display: inline-block; }
+.show-inline-block { display: inline-block; }
+

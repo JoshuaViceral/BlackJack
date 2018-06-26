@@ -17,46 +17,40 @@
     <section class="text-area">
       <h2 class="js-lets-play">Let's Play.</h2>
       <h2 class="js-game-started">Game Started...</h2>
+      <h2 class="js-game-over">Game Over...</h2>
+
     </section>
 
-    <section class="disp-data dealer-data js-dealer-data">
+    <section class="js-dealer-data dealer-data disp-data">
       <p>Dealer's Hand:</p>
 
-      <div class="js-dealer-cards">
-        <img src="./assets/images/JS.png">
-        <img src="./assets/images/AS.png">
-      </div>
+      <div class="js-dealer-cards"></div>
 
       <h4>
         Score: <span class="js-dealer-score">0</span>
       </h4>
     </section>
 
-    <section class="disp-data player-data js-player-data">
+    <section class="js-player-data player-data disp-data">
       <p>
-        <span class="js-player-name"></span> Hand:</p>
+        <span class="js-player-name"></span>'s Hand:</p>
 
-      <div class="js-player-cards">
-        <img src="./assets/images/2C.png">
-        <img src="./assets/images/3C.png">
-      </div>
+      <div class="js-player-cards"></div>
 
-      <h4>
-        Score: <span class="js-player-score">0</span>
-      </h4>
-    </section>
-
-    <section class="js-results results">
-      <h3>You win!</h3>
-      <h3>You got a Blackjack! You win!</h3>
-      <h3>You lose...</h3>
-      <h3>It's a tie!</h3>
+      <h4>Score: <span class="js-player-score">0</span> </h4>
     </section>
 
     <section>
-      <button class="js-new-game-button new-game-button">New Game</button>
-      <button class="js-hit-button hit-button">Hit!</button>
-      <button class="js-stay-button stay-button">Stay</button>
+      <h3 class= "js-result-win">You win!</h3>
+      <h3 class= "js-result-blackjack">You got a Blackjack! You win!</h3>
+      <h3 class= "js-result-lose">You lose...</h3>
+      <h3 class= "js-result-tie">It's a tie!</h3>
+    </section>
+
+    <section class="game-buttons">
+      <button class="js-new-game-button">New Game</button>
+      <button class="js-hit-button">Hit!</button>
+      <button class="js-stay-button">Stay</button>
     </section>
   </main>
 

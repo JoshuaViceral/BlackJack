@@ -1,51 +1,68 @@
 /* Blackjack by Joshua Viceral */
 
-/* TO DO:
-- update score
-- show game result
-- create hidegameelements function */
-
 // ================================================
 // DOM variables
 const letsPlay = document.querySelector('.js-lets-play');
-const gameStarted = document.querySelector('js-game-started');
-const dealerData = document.querySelector('#js-dealer-data');
-const dealerCards = document.querySelector('.js-delear-cards');
+const gameStarted = document.querySelector('.js-game-started');
+const gameOver = document.querySelector('.js-game-over');
+
+const dealerData = document.querySelector('.js-dealer-data');
+const dealerCards = document.querySelector('.js-dealer-cards');
 const dealerScore = document.querySelector('.js-dealer-score');
 
-const playerData = document.querySelector('#js-player-data');
+const playerData = document.querySelector('.js-player-data');
 const playerName = document.querySelector('.js-player-name');
 const playerCards = document.querySelector('.js-player-cards');
 const playerScore = document.querySelector('.js-player-score');
 
-const results = document.querySelector('.js-results');
+const resultWin = document.querySelector('.js-result-win');
+const resultBlackjack = document.querySelector('.js-result-blackjack');
+const resultLose = document.querySelector('.js-result-lose');
+const resultTie = document.querySelector('.js-result-tie');
+
 const newGameButton = document.querySelector('.js-new-game-button');
 const hitButton = document.querySelector('.js-hit-button');
 const stayButton = document.querySelector('.js-stay-button');
 
 // ================================================
-// game variables
+// Game variables
 let deck = [];
 let endOfTurn = false;
-let gameOver = false;
+let endOfGame = false;
 
 // ================================================
 // Prototypes
 const Person = function () {
-  this.name = '';
-  this.cards = [];
-};
-
-Object.defineProperty(Person.prototype, 'score', {
-  get() {
-    let acc = 0;
-    for (let i = 0; i < this.cards.length; i++) {
-      const element = this.cards[i];
-      acc += convertRanktoValue(element.rank);
+  function convertRanktoValue(rank) {
+    switch (rank) {
+      case 'A': return 11;
+      case '9': return 9;
+      case '8': return 8;
+      case '7': return 7;
+      case '6': return 6;
+      case '5': return 5;
+      case '4': return 4;
+      case '3': return 3;
+      case '2': return 2;
+      // for Ten, Jack, Queen, and King
+      default: return 10;
     }
-    return acc;
-  },
-});
+  }
+
+  function score() {
+    let total = 0;
+    for (let i = 0; i < this.cards.length; i++) {
+      total += convertRanktoValue(this.cards[i].rank);
+    }
+    return total;
+  }
+
+  return {
+    score,
+    name: '',
+    cards: [],
+  };
+};
 
 // ==============================================
 // Create players
@@ -84,151 +101,185 @@ function drawCard(deckIn) {
   return deckIn.pop();
 }
 
-function convertRanktoValue(rank) {
-  switch (rank) {
-    case 'A': return 11;
-    case '9': return 9;
-    case '8': return 8;
-    case '7': return 7;
-    case '6': return 6;
-    case '5': return 5;
-    case '4': return 4;
-    case '3': return 3;
-    case '2': return 2;
-    // for Ten, Jack, Queen, and King
-    default: return 10;
-  }
-}
-
-// ==============================================
 // Render Image
 function renderCardImage(card) {
   return `<img src="./assets/images/${card.rank}${card.suit[0].toUpperCase()}.png">`;
 }
 
-function printPersonData(person) {
-  let text = `<h3>${person.name}'s Hand:</h3>`;
+function showHand(person) {
+  let cards = '';
   for (let i = 0; i < person.cards.length; i++) {
-    text += `${renderCardImage(person.cards[i])}`;
+    cards += renderCardImage(person.cards[i]);
   }
-  text += `<p>Score: ${person.score}</p>`;
-  return text;
+  return cards;
 }
 
-function hideAllGameButton() {
-
+function showAllHands() {
+  playerCards.innerHTML = showHand(player);
+  dealerCards.innerHTML = showHand(dealer);
+  dealerScore.innerHTML = dealer.score();
+  playerScore.innerHTML = player.score();
 }
 
-function initializeDOM() {
-  displayData[0].style.display = 'none';
-  displayData[1].style.display = 'none';
-
-
-  newGameButton.classList.remove('is-hidden');
-  newGameButton.classList.add('is-shown');
-
-  hitButton.classList.remove('is-shown');
-  hitButton.classList.add('is-hidden');
-
-  stayButton.classList.remove('is-shown');
-  stayButton.classList.add('is-hidden');
-
-  textArea.classList.remove('is-hidden');
-  textArea.classList.add('is-shown');
+function hideAllGameStatus() {
+  letsPlay.classList.remove('show-block');
+  gameStarted.classList.remove('show-block');
+  gameOver.classList.remove('show-block');
 }
 
-function checkResult() {
-  const playerScore = player.score;
-  const dealerScore = dealer.score;
-  if (playerScore > 21) {
-    textArea.innerText = 'You Lose...';
-    gameOver = true;
-  } else if (dealerScore > 21) {
-    textArea.innerText = 'You Win!';
-    gameOver = true;
-  } else if (endOfTurn) {
-    if (dealerScore < playerScore) {
-      if (playerScore === 21) {
-        textArea.innerText = 'You got a Blackjack! You Win!';
-      } else {
-        textArea.innerText = 'You Win!';
-      }
-    } else if (dealerScore === playerScore) {
-      textArea.innerText = "It's a Tie!";
-    } else if (dealerScore > playerScore) {
-      textArea.innerText = 'You Lose...';
-    }
-    gameOver = true;
+function hideAllGameResults() {
+  resultWin.classList.remove('show-block');
+  resultBlackjack.classList.remove('show-block');
+  resultLose.classList.remove('show-block');
+  resultTie.classList.remove('show-block');
+}
+
+function hideAllGameButtons() {
+  newGameButton.classList.remove('show-inline-block');
+  hitButton.classList.remove('show-inline-block');
+  stayButton.classList.remove('show-inline-block');
+}
+
+/* function checkScores() {
+  const scorePlayer = player.score();
+  const scoreDealer = dealer.score();
+  if (!endOfTurn && scorePlayer > 21) {
+    // check if player score exceeds 21, end the game
+    endOfGame = true;
+    resultLose.classList.add('show-block');
+  } else if (!endOfTurn && scorePlayer === 21) {
+    endOfTurn = true;
+    resultWin.classList.add('show-block');
+  } else if (endOfTurn && scoreDealer === scorePlayer) {
+    endOfGame = true;
+    resultTie.classList.add('show-block');
+  } else if (endOfTurn && scorePlayer < 21 && scoreDealer < scorePlayer) {
+    // if player score is below 21 and player decided to end the turn
+    endOfGame = true;
+    resultWin.classList.add('show-block');
+  } else if (endOfTurn && scorePlayer < 21 && scoreDealer > scorePlayer) {
+    endOfGame = true;
+    resultLose.classList.add('show-block');
+  } else if (endOfTurn && scorePlayer === 21 && scoreDealer < scorePlayer) {
+    endOfGame = true;
+    resultBlackjack.classList.add('show-block');
   }
-  if (gameOver) {
-    newGameButton.style.display = 'block';
-    hitButton.style.display = 'none';
-    stayButton.style.display = 'none';
-  }
+} */
+
+function isTurnDone() {
+  const score = player.score();
+  const lose = () => resultLose.classList.add('show-block');
+  endOfTurn = score === 21;
+  endOfGame = score > 21;
+  if (endOfGame) { lose(); }
 }
+
+function checkScores() {
+  const scorePlayer = player.score();
+  const scoreDealer = dealer.score();
+  const tie = () => resultTie.classList.add('show-block');
+  const win = () => resultWin.classList.add('show-block');
+  const lose = () => resultLose.classList.add('show-block');
+  const blackjack = () => resultBlackjack.classList.add('show-block');
+
+  if (scorePlayer === 21 && scoreDealer !== 21) { blackjack(); } else
+  if (scorePlayer < scoreDealer && scoreDealer <= 21) { lose(); } else
+  if (scorePlayer > scoreDealer || scoreDealer > 21) { win(); } else
+  if (scorePlayer === scoreDealer) { tie(); }
+}
+
 function dealerTurn() {
-  while (dealer.score < 17) {
+  while (dealer.score() < 17) {
     dealer.cards.push(drawCard(deck));
   }
 }
-// ==============================================
-// initialize interface
-initializeDOM();
 
+function init() {
+  letsPlay.classList.add('show-block');
+  newGameButton.classList.add('show-inline-block');
+}
 
+function showNewGameUI() {
+  // show new game interface
+  hideAllGameStatus();
+  hideAllGameResults();
+  hideAllGameButtons();
+  gameStarted.classList.add('show-block');
+  playerData.classList.add('show-block');
+  dealerData.classList.add('show-block');
+  hitButton.classList.add('show-inline-block');
+  stayButton.classList.add('show-inline-block');
+  endOfGame = false;
+  endOfTurn = false;
+}
 
-// ==============================================
-// Start a new game
-newGameButton.addEventListener('click', () => {
-  // make sure player inputs name
+function showEndGameUI() {
+  hideAllGameButtons();
+  newGameButton.classList.add('show-inline-block');
+}
+function checkPlayerName() {
   while (!player.name) {
+    playerData.classList.remove('show-block');
+    dealerData.classList.remove('show-block');
     player.name = prompt('Enter your name:', 'Player One');
   }
+  playerName.innerHTML = player.name;
+}
 
-  // show game data
-  displayData[0].style.display = 'block';
-  displayData[1].style.display = 'block';
-  // show game controls
-  newGameButton.style.display = 'none';
-  hitButton.style.display = 'inline';
-  stayButton.style.display = 'inline';
-  // create and shuffle deck
+// ==============================================
+// initialize
+init();
+
+// ==============================================
+// Game actions
+
+newGameButton.addEventListener('click', () => {
+  // make sure player inputs name
+  checkPlayerName();
+  showNewGameUI();
   deck = createDeck();
   deck = shuffle(deck);
-  // deal 2 cards for each person
   player.cards = [drawCard(deck), drawCard(deck)];
   dealer.cards = [drawCard(deck), drawCard(deck)];
-  // show cards and scores for each person
-  player1Data.innerHTML = printPersonData(player);
-  player2Data.innerHTML = printPersonData(dealer);
-  // restart flags
-  gameOver = false;
-  endOfTurn = false;
-  textArea.innerText = 'Game Started...';
-  // If player got a blackjack, the dealer will draw cards.
-  if (player.score === 21) {
-    endOfTurn = true;
+  showAllHands();
+  isTurnDone();
+  if (endOfTurn && !endOfGame) {
     dealerTurn();
+    checkScores();
+    endOfGame = true;
   }
-  checkResult();
+  showAllHands();
+  if (endOfGame) {
+    showEndGameUI();
+  }
 });
 
-// the player can press hit to draw a card several times until he
-// decides to stay, or until his score reaches 21 or higher.
 stayButton.addEventListener('click', () => {
   endOfTurn = true;
   dealerTurn();
-  player2Data.innerText = printPersonData(dealer);
-  checkResult();
+  checkScores();
+  endOfGame = true;
+  showAllHands();
+  showEndGameUI();
 });
 
 hitButton.addEventListener('click', () => {
   player.cards.push(drawCard(deck));
-  player1Data.innerText = printPersonData(player);
-  if (player.score === 21) {
-    endOfTurn = true;
+  isTurnDone();
+  if (endOfTurn && !endOfGame) {
     dealerTurn();
+    checkScores();
+    endOfGame = true;
   }
-  checkResult();
+  showAllHands();
+  if (endOfGame) {
+    showEndGameUI();
+  }
 });
 
+
+/* initial score is 11, 
+then draws card.
+
+even though score has not exceeded 21, the game ends without a result
+*/
