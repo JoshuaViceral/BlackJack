@@ -26,80 +26,84 @@ const stayButton = document.querySelector('.js-stay-button');
 
 // ================================================
 // Game variables
-let deck = [];
 let endOfTurn = false;
 let endOfGame = false;
 
 // ================================================
-// Prototypes
-const Person = function () {
-  function convertRanktoValue(rank) {
-    switch (rank) {
-      case 'A': return 11;
-      case '9': return 9;
-      case '8': return 8;
-      case '7': return 7;
-      case '6': return 6;
-      case '5': return 5;
-      case '4': return 4;
-      case '3': return 3;
-      case '2': return 2;
-      // for Ten, Jack, Queen, and King
-      default: return 10;
-    }
-  }
+// Objects
 
-  function score() {
-    let total = 0;
-    for (let i = 0; i < this.cards.length; i++) {
-      total += convertRanktoValue(this.cards[i].rank);
+const deck = {
+  cards: [],
+  addNewDeck: () => {
+    const suits = ['S', 'C', 'D', 'H'];
+    const ranks = ['A', 'K', 'Q', 'J', '10', '9', '8', '7', '6', '5', '4', '3', '2'];
+    for (let suitsIndex = 0; suitsIndex < suits.length; suitsIndex++) {
+      for (let ranksIndex = 0; ranksIndex < ranks.length; ranksIndex++) {
+        this.cards.push({ suit: suits[suitsIndex], rank: ranks[ranksIndex] });
+      }
     }
-    return total;
-  }
+  },
+  shuffle: () => {
+    const deckTemp = this.cards;
+    for (let i = 0; i < deckTemp.length; i++) {
+      const randomIdx = Math.floor(Math.random() * deckTemp.length);
+      const oldCard = deckTemp[i];
+      const randomCard = deckTemp[randomIdx];
+      deckTemp[randomIdx] = oldCard;
+      deckTemp[i] = randomCard;
+    }
+    this.cards = deckTemp;
+  },
+  clear: () => {
+    this.cards = [];
+  },
+  cardCount: () => this.cards.length,
+};
 
-  return {
-    score,
-    name: '',
-    cards: [],
-  };
+const Person = (data) => {
+  this.name = data.name;
+  this.cards = data.cards;
+  this.score = data.score;
+};
+
+Person.prototype.drawCard = (deckIn) => {
+  if (Array.isArray(this.cards)) {
+    this.cards.push = deckIn.pop();
+  }
+};
+
+Person.prototype.rankToValue = (rank) => {
+  switch (rank) {
+    case 'A': return 11;
+    case '9': return 9;
+    case '8': return 8;
+    case '7': return 7;
+    case '6': return 6;
+    case '5': return 5;
+    case '4': return 4;
+    case '3': return 3;
+    case '2': return 2;
+    // for Ten, Jack, Queen, and King
+    default: return 10;
+  }
+};
+
+Person.prototype.getScore = () => {
+  this.score = 0;
+  for (let i = 0; i < this.cards.length; i++) {
+    this.score += this.rankToValue(this.cards[i].rank);
+  }
 };
 
 // ==============================================
 // Create players
-const player = new Person();
-const dealer = new Person();
-dealer.name = 'Dealer';
+const player = new Person({});
+const dealer = new Person({
+  name: 'Dealer',
+});
 
 // ================================================
 // functions
-function createDeck() {
-  const newDeck = [];
-  const suits = ['S', 'C', 'D', 'H'];
-  const ranks = ['A', 'K', 'Q', 'J', '10', '9', '8', '7', '6', '5', '4', '3', '2'];
-  for (let suitsIndex = 0; suitsIndex < suits.length; suitsIndex++) {
-    for (let ranksIndex = 0; ranksIndex < ranks.length; ranksIndex++) {
-      newDeck.push({ suit: suits[suitsIndex], rank: ranks[ranksIndex] });
-    }
-  }
-  return newDeck;
-}
-
-function shuffle(arr) {
-  const arrCopy = arr;
-  for (let i = 0; i < arrCopy.length; i++) {
-    // get random element from the array
-    const randomIdx = Math.floor(Math.random() * arrCopy.length);
-    const element = arrCopy[randomIdx];
-    // swap the indexed element to a random element.
-    arrCopy[randomIdx] = arrCopy[i];
-    arrCopy[i] = element;
-  }
-  return arrCopy;
-}
-
-function drawCard(deckIn) {
-  return deckIn.pop();
-}
 
 // Render Image
 function renderCardImage(card) {
@@ -117,8 +121,8 @@ function showHand(person) {
 function showAllHands() {
   playerCards.innerHTML = showHand(player);
   dealerCards.innerHTML = showHand(dealer);
-  dealerScore.innerHTML = dealer.score();
-  playerScore.innerHTML = player.score();
+  dealerScore.innerHTML = dealer.score;
+  playerScore.innerHTML = player.score;
 }
 
 function hideAllGameStatus() {
@@ -140,34 +144,8 @@ function hideAllGameButtons() {
   stayButton.classList.remove('show-inline-block');
 }
 
-/* function checkScores() {
-  const scorePlayer = player.score();
-  const scoreDealer = dealer.score();
-  if (!endOfTurn && scorePlayer > 21) {
-    // check if player score exceeds 21, end the game
-    endOfGame = true;
-    resultLose.classList.add('show-block');
-  } else if (!endOfTurn && scorePlayer === 21) {
-    endOfTurn = true;
-    resultWin.classList.add('show-block');
-  } else if (endOfTurn && scoreDealer === scorePlayer) {
-    endOfGame = true;
-    resultTie.classList.add('show-block');
-  } else if (endOfTurn && scorePlayer < 21 && scoreDealer < scorePlayer) {
-    // if player score is below 21 and player decided to end the turn
-    endOfGame = true;
-    resultWin.classList.add('show-block');
-  } else if (endOfTurn && scorePlayer < 21 && scoreDealer > scorePlayer) {
-    endOfGame = true;
-    resultLose.classList.add('show-block');
-  } else if (endOfTurn && scorePlayer === 21 && scoreDealer < scorePlayer) {
-    endOfGame = true;
-    resultBlackjack.classList.add('show-block');
-  }
-} */
-
 function isTurnDone() {
-  const score = player.score();
+  const score = player.getScore();
   const lose = () => resultLose.classList.add('show-block');
   endOfTurn = score === 21;
   endOfGame = score > 21;
@@ -175,8 +153,8 @@ function isTurnDone() {
 }
 
 function checkScores() {
-  const scorePlayer = player.score();
-  const scoreDealer = dealer.score();
+  const scorePlayer = player.score;
+  const scoreDealer = dealer.score;
   const tie = () => resultTie.classList.add('show-block');
   const win = () => resultWin.classList.add('show-block');
   const lose = () => resultLose.classList.add('show-block');
@@ -189,8 +167,9 @@ function checkScores() {
 }
 
 function dealerTurn() {
-  while (dealer.score() < 17) {
-    dealer.cards.push(drawCard(deck));
+  while (dealer.score < 17) {
+    dealer.drawCard(deck.cards);
+    dealer.getScore();
   }
 }
 
@@ -237,10 +216,12 @@ newGameButton.addEventListener('click', () => {
   // make sure player inputs name
   checkPlayerName();
   showNewGameUI();
-  deck = createDeck();
-  deck = shuffle(deck);
-  player.cards = [drawCard(deck), drawCard(deck)];
-  dealer.cards = [drawCard(deck), drawCard(deck)];
+  deck.addNewDeck();
+  deck.shuffle();
+  player.drawCard(deck.cards);
+  player.drawCard(deck.cards);
+  dealer.drawCard(deck.cards);
+  dealer.drawCard(deck.cards);
   showAllHands();
   isTurnDone();
   if (endOfTurn && !endOfGame) {
@@ -264,7 +245,7 @@ stayButton.addEventListener('click', () => {
 });
 
 hitButton.addEventListener('click', () => {
-  player.cards.push(drawCard(deck));
+  player.drawCard(deck.cards);
   isTurnDone();
   if (endOfTurn && !endOfGame) {
     dealerTurn();
@@ -277,8 +258,7 @@ hitButton.addEventListener('click', () => {
   }
 });
 
-
-/* initial score is 11, 
+/* initial score is 11,
 then draws card.
 
 even though score has not exceeded 21, the game ends without a result
