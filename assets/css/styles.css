@@ -1,9 +1,9 @@
+/* the asterisk refers to the browser */
 * {
 	font-family: 'Lato', sans-serif;
 }
 
-h2,
-h3 {display: none}
+h2, h3 {display: none}
 
 button {
 	padding: 10px 20px;

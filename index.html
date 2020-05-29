@@ -5,47 +5,57 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Blackjack by Joshua Viceral</title>
-  <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="joshua viceral">
+  <meta name="description" content="free backjack card game">
+  <meta name="keywords" content="joshua viceral, blackjack, card game, free">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700">
   <link rel="stylesheet" href="./assets/css/styles.css">
+  <title>Blackjack by Joshua Viceral</title>
 </head>
 
 <body>
   <main>
     <h1>Blackjack</h1>
-    <cite>by Joshua Viceral</cite>
+    <i>by Joshua Viceral</i>
+
+    <!-- section: Game Status -->
     <section class="text-area">
       <h2 class="js-lets-play">Let's Play.</h2>
       <h2 class="js-game-started">Game Started...</h2>
       <h2 class="js-game-over">Game Over...</h2>
-
     </section>
+    <!--/ section: Game Status -->
 
+    <!-- section: Dealer -->
     <section class="js-dealer-data dealer-data disp-data">
       <p>Dealer's Hand:</p>
-
+      
       <div class="js-dealer-cards"></div>
-
-      <h4>
-        Score: <span class="js-dealer-score">0</span>
-      </h4>
+      
+      <h4>Score: <span class="js-dealer-score">0</span></h4>
     </section>
+    <!--/ section: Dealer -->
 
+    <!-- section: Player -->
     <section class="js-player-data player-data disp-data">
-      <p>
-        <span class="js-player-name"></span>'s Hand:</p>
-
-      <div class="js-player-cards"></div>
-
-      <h4>Score: <span class="js-player-score">0</span> </h4>
+      <p><span class="js-player-name"></span>'s Hand:</p>
+        
+        <div class="js-player-cards"></div>
+        
+        <h4>Score: <span class="js-player-score">0</span></h4>
     </section>
-
+    <!--/ section: Player -->
+    
+    <!-- section: Game Result -->
     <section>
-      <h3 class= "js-result-win">You win!</h3>
-      <h3 class= "js-result-blackjack">You got a Blackjack! You win!</h3>
-      <h3 class= "js-result-lose">You lose...</h3>
-      <h3 class= "js-result-tie">It's a tie!</h3>
+      <h3 class="js-result-win">You win!</h3>
+      <h3 class="js-result-blackjack">You got a Blackjack! You win!</h3>
+      <h3 class="js-result-lose">You lose...</h3>
+      <h3 class="js-result-tie">It's a tie!</h3>
     </section>
+    <!--/ section: Game Result -->
 
     <section class="game-buttons">
       <button class="js-new-game-button">New Game</button>
